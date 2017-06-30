@@ -92,6 +92,18 @@ int main() {
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
 
+          // to compensate for the 100ms delay for the actuators
+          // update px and py to where the vehicle would be in 100ms
+          double dt = 0.1; 
+          double v_mps = v * 0.44704; // speed in meter per second
+          px = px + cos(psi) * v_mps * dt;
+          py = py + sin(psi) * v_mps * dt;
+          // cout
+          //   << " px " << j[1]["x"] << " " << px
+          //   << " py " << j[1]["y"] << " " << py
+          //   << " v " << v << " v_mps " << v_mps
+          //   << endl;
+
           // convert waypoints in reference to the car's coordinate system
           int num_of_points = ptsx.size();
           Eigen::VectorXd ptsx_car(num_of_points);
