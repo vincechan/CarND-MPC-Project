@@ -4,7 +4,27 @@ Implement a MPC controller in C++ to maneuver the vehicle around the track.
 [Link to the video on youtube, car using implemented MPC controller to drive around the track](https://www.youtube.com/watch?v=9sBgUKFiUao)
 
 ## The Model 
-Describe model in detail. This includes the state, actuators and update equations.
+Describe model in detail. This includes the state, actuators and update equations. 
+
+The MPC controller in this project uses the kinematic model. The state contains 6 elements
+  - x position. This is given by the simulator
+  - y position. this is given by the simulator
+  - psi angle. This is given by the simulator
+  - velocity. This is given by the simulator
+  - cte - cross track error. This is calculated using *polyeval(coeffs, 0)*
+  - epis - error for psi. This is calculated using *-atan(coeffs[1])*
+  
+and two actuators
+  - acceleration. The value is between -1 (full brake) and 1 (full acceleration)
+  - delta (-25 radian to 25 radian) for steering
+
+The update equations are given by:
+  - x1 = x0 + v0 * cos(psi) * dt
+  - y1 = y0 + v0 * sin(psi) * dt
+  - psi1 = psi0 + (v0 / Lf) * dt * delta[t])
+  - v1 = v0 + a0 * dt
+  - cte1 = f0 - y0 + (v0 * sin(epsi0) * dt)
+  - epsi1 = psi0 - psides0 + (v0 / Lf) * delta0 * dt
 
 
 ## Timestep Length and Elapsed Duration (N & dt) 
